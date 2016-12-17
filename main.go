@@ -16,6 +16,9 @@ func main() {
 	e.File("/", "public/index.html")
 	e.POST("/index", handlers.IndexFace)
 	e.POST("/detect", handlers.DetectFace)
+	//util.DeleteCollection("nhack1")
+	//util.DeleteCollection("nhack2")
+	//util.CreateCollection("nhack1")
 	go util.TwitterStream("nhack")
 	e.Logger.Fatal(e.Start(":1323"))
 }

@@ -14,6 +14,8 @@ import (
 
 var sess *session.Session
 
+var collectionID = "nhack1"
+
 func init() {
 	var err error
 	sess, err = session.NewSession()
@@ -55,7 +57,7 @@ func IndexFace(c echo.Context) error {
 	svc := rekognition.New(sess, aws.NewConfig().WithRegion("us-west-2"))
 
 	params2 := &rekognition.IndexFacesInput{
-		CollectionId: aws.String("nhack1"), // Required
+		CollectionId: aws.String(collectionID), // Required
 		Image: &rekognition.Image{ // Required
 			S3Object: &rekognition.S3Object{
 				Bucket: aws.String("nhack1"),
@@ -81,11 +83,13 @@ func IndexFace(c echo.Context) error {
 func DetectFace(c echo.Context) error {
 	image, err := c.FormFile("image")
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
 	src, err := image.Open()
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	defer src.Close()
@@ -101,6 +105,7 @@ func DetectFace(c echo.Context) error {
 
 	resp, err := s3vc.PutObject(params)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 
@@ -108,7 +113,7 @@ func DetectFace(c echo.Context) error {
 
 	svc := rekognition.New(sess, aws.NewConfig().WithRegion("us-west-2"))
 	params2 := &rekognition.SearchFacesByImageInput{
-		CollectionId: aws.String("nhack1"), // Required
+		CollectionId: aws.String(collectionID), // Required
 		Image: &rekognition.Image{ // Required
 			S3Object: &rekognition.S3Object{
 				Bucket: aws.String("nhack1"),
@@ -120,6 +125,7 @@ func DetectFace(c echo.Context) error {
 	}
 	resp2, err := svc.SearchFacesByImage(params2)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 

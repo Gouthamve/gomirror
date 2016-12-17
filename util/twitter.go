@@ -43,6 +43,10 @@ func TwitterStream(hash string) {
 		item := <-s.C
 		switch status := item.(type) {
 		case anaconda.Tweet:
+			if len(status.Entities.Media) == 0 {
+				fmt.Println("Tweet w/o image detected")
+				continue
+			}
 			go addPersontoDb(status.User.ScreenName, status.Entities.Media[0].Media_url)
 		default:
 			fmt.Println("YOLO")
@@ -51,6 +55,7 @@ func TwitterStream(hash string) {
 }
 
 func addPersontoDb(handle, url string) {
+	fmt.Println(handle, url)
 	filename := handle + ".jpg"
 	resp, err := http.Get(url)
 	if err != nil {
