@@ -5,8 +5,18 @@
   <meta charset='utf-8'>
   <link rel="stylesheet" href="/public/main.css" type="text/css" media="all">
   <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css" type="text/css" media="all">
-  <script src="/public/capture.js">z
-  </script>
+  <script src="/public/capture.js"></script>
+  <script src="/public/jquery-3.1.1.min.js"></script>
+  <script> 
+    var myObj = {
+    name: 'Mudit Gupta',
+    age: 21,
+    emotion: 'Happy',
+    Gender: 'Male',
+    twitterHandle: 'mudit_05_',
+    RecentTweets: 'some random tweet'
+};
+</script>
 </head>
 <body>
 <div class="contentarea">
@@ -18,16 +28,16 @@
   </canvas>
   <div>
       <div class = "col-md-3 left">
-        <h3 class ="header3"> Emotion </h3>
-        <h3 class ="header3"> Gender </h3>
-        <h3 class ="header3"> Age </h3>
+        <h3 class ="header3" id="1">  </h3>
+        <h3 class ="header3" id="2"> Gender </h3>
+        <h3 class ="header3" id ="3"> Age </h3>
       </div>
       <div class = "col-md-4"></div>
       <div class = "right col-md-5">
         <div class ="col-md-8">
-          <h3 class ="header3"> Name </h3>
-          <h3 class ="header3"> Twitter Handle </h3>
-          <h3 class ="header3"> Recent Tweets </h3>
+          <h3 class ="header3" id="4"> Name </h3>
+          <h3 class ="header3" id="5"> Twitter Handle </h3>
+          <h3 class ="header3" id="6"> Recent Tweets </h3>
         </div>
         <div class ="col-md-4">
           <img id="twitterPic" src= "/public/greypipes.png" alt="Twitter Pic">
@@ -41,5 +51,12 @@
   <input id="hiddenFile" type="file" name="image">
 </form>
 </div>
-</body>
+<script>
+    document.getElementById("1").innerHTML = "Emotion: "+myObj.emotion
+    document.getElementById("2").innerHTML = "Gender: "+myObj.Gender
+    document.getElementById("3").innerHTML = "Age: "+myObj.age
+    document.getElementById("4").innerHTML = "Name: "+myObj.name
+    document.getElementById("5").innerHTML = "Twitter Handle: "+myObj.twitterHandle
+    document.getElementById("6").innerHTML = "Recent Tweets: "+myObj.RecentTweets
+    </script>
 </html>
