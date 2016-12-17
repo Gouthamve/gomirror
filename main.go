@@ -20,5 +20,6 @@ func main() {
 	//util.DeleteCollection("nhack2")
 	//util.CreateCollection("nhack1")
 	go util.TwitterStream("nhack")
+	defer util.DBClose()
 	e.Logger.Fatal(e.Start(":1323"))
 }

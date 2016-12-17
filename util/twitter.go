@@ -47,19 +47,29 @@ func TwitterStream(hash string) {
 				fmt.Println("Tweet w/o image detected")
 				continue
 			}
-			go addPersontoDb(status.User.ScreenName, status.Entities.Media[0].Media_url)
+			go addPersontoDb(status.User, status.Entities.Media[0].Media_url, client)
 		default:
 			fmt.Println("YOLO")
 		}
 	}
 }
 
-func addPersontoDb(handle, url string) {
-	fmt.Println(handle, url)
-	filename := handle + ".jpg"
-	resp, err := http.Get(url)
+func addPersontoDb(u anaconda.User, urly string, cl *anaconda.TwitterApi) {
+	handle := u.ScreenName
+	fmt.Println(handle, urly)
+	user, err := GetUser(handle)
 	if err != nil {
-		fmt.Println("OOOOPS:", handle, url)
+		fmt.Println(err)
+		return
+	}
+	if user.TwitterID != "" && user.InDB {
+		return
+	}
+
+	filename := handle + ".jpg"
+	resp, err := http.Get(urly)
+	if err != nil {
+		fmt.Println("OOOOPS:", handle, urly)
 		return
 	}
 	defer resp.Body.Close()
@@ -75,7 +85,7 @@ func addPersontoDb(handle, url string) {
 
 	sess, err := session.NewSession()
 	if err != nil {
-		fmt.Println("OOOOPS2:", handle, url)
+		fmt.Println("OOOOPS2:", handle, urly)
 		return
 	}
 
@@ -114,4 +124,32 @@ func addPersontoDb(handle, url string) {
 	}
 
 	fmt.Println(resp3)
+	user = UserModel{
+		TwitterID: handle,
+		Name:      u.Name,
+		InDB:      true,
+	}
+
+	if len(resp3.FaceRecords) == 0 {
+		user.InDB = false
+	}
+
+	v := url.Values{}
+	v.Set("user_id", u.IdStr)
+	v.Set("count", "10")
+	twts, err := cl.GetUserTimeline(v)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	tweetIds := make([]string, len(twts))
+	for i := 0; i < len(twts); i++ {
+		tweetIds[i] = twts[i].IdStr
+	}
+
+	user.Tweets = tweetIds
+	if err := SaveUser(user); err != nil {
+		fmt.Println(err)
+	}
 }
