@@ -165,34 +165,55 @@ func DetectFace(c echo.Context) error {
 	fm2 := faces3.FaceDetails[0]
 
 	r := responsey{
-		Name:       u.Name,
-		TwitterID:  u.TwitterID,
-		Tweets:     u.Tweets,
-		Emotion:    *fm2.Emotions[0].Type,
-		Gender:     *fm2.Gender.Value,
-		Eyeglasses: *fm2.Eyeglasses.Value,
-		EyesOpen:   *fm2.EyesOpen.Value,
-		MouthOpen:  *fm2.MouthOpen.Value,
-		Mustache:   *fm2.Mustache.Value,
-		Smile:      *fm2.Smile.Value,
-		Sunglasses: *fm2.Sunglasses.Value,
-		Beard:      *fm2.Beard.Value,
+		Name:           u.Name,
+		TwitterID:      u.TwitterID,
+		Tweets:         u.Tweets,
+		Emotion:        *fm2.Emotions[0].Type,
+		EmotionConf:    *fm2.Emotions[0].Confidence,
+		Gender:         *fm2.Gender.Value,
+		GenderConf:     *fm2.Gender.Confidence,
+		Eyeglasses:     *fm2.Eyeglasses.Value,
+		EyeglassesConf: *fm2.Eyeglasses.Confidence,
+		EyesOpen:       *fm2.EyesOpen.Value,
+		EyesOpenConf:   *fm2.EyesOpen.Confidence,
+		MouthOpen:      *fm2.MouthOpen.Value,
+		MouthOpenConf:  *fm2.MouthOpen.Confidence,
+		Mustache:       *fm2.Mustache.Value,
+		MustacheConf:   *fm2.Mustache.Confidence,
+		Smile:          *fm2.Smile.Value,
+		SmileConf:      *fm2.Smile.Confidence,
+		Sunglasses:     *fm2.Sunglasses.Value,
+		SunglassesConf: *fm2.Sunglasses.Confidence,
+		Beard:          *fm2.Beard.Value,
+		BeardConf:      *fm2.Beard.Confidence,
 	}
 	return c.JSON(http.StatusOK, r)
 }
 
 type responsey struct {
-	Name       string   `json:"name"`
-	TwitterID  string   `json:"twitterId"`
-	Tweets     []string `json:"tweets"`
-	Emotion    string   `json:"emotion"`
-	Gender     string   `json:"gender"`
-	Age        int      `json:"age"`
-	Eyeglasses bool     `json:"eyeglasses"`
-	EyesOpen   bool     `json:"eyesopen"`
-	MouthOpen  bool     `json:"mouthopen"`
-	Mustache   bool     `json:"mustache"`
-	Smile      bool     `json:"smile"`
-	Sunglasses bool     `json:"sunglasses"`
-	Beard      bool     `json:"beard"`
+	Name           string   `json:"name"`
+	NameConf       string   `json:"nameConf"`
+	TwitterID      string   `json:"twitterId"`
+	TwitterIDConf  float64  `json:"twitterIdConf"`
+	Tweets         []string `json:"tweets"`
+	Emotion        string   `json:"emotion"`
+	EmotionConf    float64  `json:"emotionConf"`
+	Gender         string   `json:"gender"`
+	GenderConf     float64  `json:"genderConf"`
+	Age            int      `json:"age"`
+	AgeConf        float64  `json:"ageConf"`
+	Eyeglasses     bool     `json:"eyeglasses"`
+	EyeglassesConf float64  `json:"eyeglassesConf"`
+	EyesOpen       bool     `json:"eyesopen"`
+	EyesOpenConf   float64  `json:"eyesopenConf"`
+	MouthOpen      bool     `json:"mouthopen"`
+	MouthOpenConf  float64  `json:"mouthopenConf"`
+	Mustache       bool     `json:"mustache"`
+	MustacheConf   float64  `json:"mustacheConf"`
+	Smile          bool     `json:"smile"`
+	SmileConf      float64  `json:"smileConf"`
+	Sunglasses     bool     `json:"sunglasses"`
+	SunglassesConf float64  `json:"sunglassesConf"`
+	Beard          bool     `json:"beard"`
+	BeardConf      float64  `json:"beardConf"`
 }
