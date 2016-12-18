@@ -122,6 +122,19 @@ function uploadPic(blob) {
   var formData = new FormData();
   formData.set("image", blob, 'cam.jpg')
   var request = new XMLHttpRequest();
+  request.onload = function () {
+    // do something to response
+    myObj = JSON.parse(this.response);
+    document.getElementById("1").innerHTML = "Emotion: "+myObj.emotion
+    document.getElementById("2").innerHTML = "Beard: "+myObj.beard
+    document.getElementById("3").innerHTML = "Eye Glasses: "+myObj.eyeglasses
+    document.getElementById("4").innerHTML = "Name: "+myObj.name
+    document.getElementById("5").innerHTML = "Twitter Handle: "+myObj.twitterId
+    document.getElementById("6").innerHTML = "Smile: "+myObj.smile
+    document.getElementById("7").innerHTML = "Eyes Open: "+myObj.eyesopen
+    document.getElementById("8").innerHTML = "Mouth Open: "+myObj.mouthopen
+    document.getElementById("9").innerHTML = "Mustache: "+myObj.mustache
+  };
   request.open("POST", "/detect");
   request.send(formData);
   // var form = document.getElementById("hiddenForm")
